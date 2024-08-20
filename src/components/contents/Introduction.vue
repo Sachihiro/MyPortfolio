@@ -1,15 +1,50 @@
 <template>
   <div class="row gx-5">
-    <div class="col-sm-6" style="display: flex; justify-content: center;">col-sm-8</div>
-    <div class="col-sm-6">
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+    <div class="col-sm-6" style="display: flex; justify-content: center;">
+    
+    <div class="circle-frame">
+        <img src="../../assets/2.png" class="rounded" alt="..." 
+    style="width:400px; height:400px;">
+    </div>
+    
+    
+    </div>
+    <div class="col-sm-5 mt-4" style="display: flex; flex-direction: column; justify-content: center;">
+        <h3 
+        class="mb-4"
+        style="text-align: center; display: inline; /* Ensure that the underline is only for the text */
+  border-bottom: 1px dotted white; /* Adjust color and thickness as needed */
+  padding-bottom: 2px;
+   /* Adjust padding if necessary to ensure visibility */">LET ME INTRODUCE MYSELF!</h3>
+        <h2>I'm Rex</h2>
+        <p class="text-justify">
+            {{ textContent.introduction }}
+        </p>
     </div>
   </div>
 </template>
 
 <script>
+import textContent from '../utility/introduction.json';
 export default {
+    data() {
+    return {
+      textContent: textContent
+    };
+  },
+  computed: {
+    greeting() {
+      const currentHour = new Date().getHours();
 
+      if (currentHour >= 5 && currentHour < 12) {
+        return 'Good Morning';
+      } else if (currentHour >= 12 && currentHour < 18) {
+        return 'Good Afternoon';
+      } else {
+        return 'Good Evening';
+      }
+    }
+  }
 }
 </script>
 
@@ -17,5 +52,28 @@ export default {
 .row{
     font-family: sans-serif;
     color:whitesmoke;
+    font-size: large;
 }
+
+.circle-frame {
+  width: 350px; /* Set to your desired size */
+  height: 350px; /* Must match the width for a perfect circle */
+  border-radius: 50%;
+  overflow: hidden; /* Ensures the image stays within the circle */
+  display: flex; /* Centers the image within the circle */
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0; /* Optional: background color */
+  padding-bottom: 4rem;
+}
+
+.circle-frame img {
+  width: 100%;
+  height: auto; /* Keeps the image proportional */
+}
+
+.text-justify{
+    text-align: justify;
+}
+
 </style>
