@@ -16,10 +16,22 @@
   border-bottom: 1px dotted white; /* Adjust color and thickness as needed */
   padding-bottom: 2px;
    /* Adjust padding if necessary to ensure visibility */">LET ME INTRODUCE MYSELF!</h3>
-        <h2>I'm Rex</h2>
+        <h2>I'm <span>{{ displayedText }}</span>
+    <span class="cursor">|</span></h2>
         <p class="text-justify">
             {{ textContent.introduction }}
+            
+
         </p>
+        <div class="d-flex" style="gap:0.5rem">
+            <button type="button" 
+           
+            class="btn btn-outline-warning">Resume</button>
+            <button type="button" class="btn btn-outline-warning">Contact Me</button>
+            
+        </div>
+        
+
     </div>
   </div>
 </template>
@@ -29,7 +41,15 @@ import textContent from '../utility/introduction.json';
 export default {
     data() {
     return {
-      textContent: textContent
+      textContent: textContent,
+      fullText: "Rex",
+      displayedText: "",
+      typingSpeed: 500,  // Speed for typing
+      deletingSpeed: 100, // Speed for deleting
+      delayAfterTyping: 1000, // Delay before starting to delete
+      loopDelay: 500, // Delay before starting to type again
+      isDeleting: false,
+      currentIndex: 0,
     };
   },
   computed: {
@@ -44,7 +64,42 @@ export default {
         return 'Good Evening';
       }
     }
-  }
+  },
+  mounted() {
+    this.startTyping();
+  },
+  methods: {
+    startTyping() {
+      const typeOrDelete = () => {
+        if (!this.isDeleting) {
+          // Typing effect
+          if (this.currentIndex < this.fullText.length) {
+            this.displayedText += this.fullText.charAt(this.currentIndex);
+            this.currentIndex++;
+            setTimeout(typeOrDelete, this.typingSpeed);
+          } else {
+            // Start deleting after a delay
+            setTimeout(() => {
+              this.isDeleting = true;
+              typeOrDelete();
+            }, this.delayAfterTyping);
+          }
+        } else {
+          // Deleting effect
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.displayedText = this.fullText.substring(0, this.currentIndex);
+            setTimeout(typeOrDelete, this.deletingSpeed);
+          } else {
+            // Start typing again after a delay
+            this.isDeleting = false;
+            setTimeout(typeOrDelete, this.loopDelay);
+          }
+        }
+      };
+      typeOrDelete();
+    },
+  },
 }
 </script>
 
@@ -76,4 +131,24 @@ export default {
     text-align: justify;
 }
 
+/**FOR TYPING ANIMATION */
+.typing-container {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
 </style>
